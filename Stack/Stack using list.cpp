@@ -40,15 +40,11 @@ public:
         return topPtr == nullptr;
     }
 
-    // PUSH: Equivalent to 'push_front' in your reference
-    // Complexity: O(1)
     void push(int n) {
         Node* newNode = new Node(n, topPtr);
         topPtr = newNode;
     }
 
-    // POP: Equivalent to 'pop_front' in your reference
-    // Complexity: O(1)
     void pop() {
         if (isEmpty()) {
             throw "Underflow";
@@ -105,3 +101,4 @@ int main() {
 
     return 0;
 }
+
