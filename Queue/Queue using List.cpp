@@ -1,115 +1,122 @@
-#include<iostream>
+#include <iostream>
 using namespace std;
 
-class Node{
+class Node {
 private:
     int data;
     Node* next_node;
 public:
-    Node(int d = 0, Node *next = nullptr){
+    Node(int d = 0, Node* next = nullptr) {
         data = d;
         next_node = next;
     }
-    int retrieve(){
+    int retrieve() {
         return data;
     }
-    Node *next(){
+    Node* next() {
         return next_node;
     }
-    void setNext(Node* ptr){
+    void setNext(Node* ptr) {
         next_node = ptr;
     }
 };
 
-class Queue{
+class Queue {
 private:
-    Node* list_head;
+    Node* top;
+
 public:
-    List(){
-        list_head = nullptr;
+    Queue() {
+        top = nullptr;
     }
-    bool isEmpty(){
-        return list_head==nullptr;
-    }
-    Node* head(){
-        return list_head;
-    }
-    Node* tail(){
-        if(isEmpty()){
-            return nullptr;
-        }
-        for(Node *ptr = list_head; ptr!=nullptr;ptr=ptr->next()){
-            if(ptr->next()==nullptr){
-                return ptr;
-            }
+
+    ~Queue() {
+        while (!isEmpty()) {
+            dequeue();
         }
     }
-    int front(){
-        return head()->retrieve();
+
+    bool isEmpty() {
+        return top == nullptr;
     }
-    int back(){
-        return tail()->retrieve();
+
+    void queue(int n) {
+        Node* newNode = new Node(n, top);
+        top = newNode;
     }
-    void push_front(int n){
-            Node *newNode = new Node(n,list_head);
-            list_head = newNode;
-    }
-    
-    void pop(){
-        if(isEmpty()){
+
+    void dequeue() {
+        if (isEmpty()) {
             throw "Underflow";
         }
-        else{
-            Node *temp = tail();
-            for(Node *ptr=list_head; ptr!=nullptr; ptr=ptr->next()){
-                if(ptr->next()==tail()){
-                    delete tail();
-                    ptr->setNext(nullptr);
-                }
+        if (top->next() == nullptr) {
+            delete top;
+            top = nullptr;
+        }
+        else {
+            Node* temp = top;
+            while (temp->next()->next() != nullptr) {
+                temp = temp->next();
             }
+            delete temp->next();
+            temp->setNext(nullptr);
         }
     }
-    void erase(int n){
-        if(isEmpty()){
-            throw "Underflow";
+    int front() {
+        if (isEmpty()) {
+            throw "Queue is empty"; 
         }
-        else{
-            while(front()==n){
-                pop_front();
-            }
-            while(back()==n){
-                pop_back();
-            }
-            for(Node* ptr = list_head; ptr!=tail();ptr=ptr->next()){
-                if(ptr->next()->retrieve()==n){
-                    Node* temp = ptr->next();
-                    ptr->setNext(temp->next());
-                    delete temp;
-                    temp = nullptr;
-                }
-            }
+        
+        Node* temp = top;
+        while (temp->next() != nullptr) {
+            temp = temp->next();
         }
+        return temp->retrieve();
     }
-    void display(){
-        if(isEmpty()){
-            throw "Underflow";
+    void display() {
+        if (isEmpty()) {
+            cout << "Queue is Empty." << endl;
         }
-        else{
-           for (Node* ptr = list_head; ptr != nullptr; ptr = ptr->next()) {
-				cout << ptr->retrieve() << " ";
-			}
-			cout << "\n"; 
+        else {
+            cout << "Queue (Rear -> Front): ";
+            for (Node* ptr = top; ptr != nullptr; ptr = ptr->next()) {
+                cout << ptr->retrieve() << " ";
+            }
+            cout << "\n";
         }
     }
 };
 
 int main() {
-	Queue q;
-	q.push(5);
-    q.push(4);
-    q.push(3);
-    q.push(7);
-    q.push(6);
+    Queue q;
+
+    //queue elements (Enqueuing at Head)
+    q.queue(10);
+    q.queue(20);
+    q.queue(30); 
+
+    // Should show: 30 20 10
+    q.display(); 
+
+    //Peek at the front (The opposite end)
+    try {
+        cout << "Current Front: " << q.front() << endl; 
+    } catch (const char* msg) {
+        cout << msg << endl;
+    }
+
+    //dequeue element
+    cout << "dequeueping front element..." << endl;
+    q.dequeue();
+    
+    // Should show: 30 20
+    q.display(); 
+    
+    //dequeue again
+    cout << "dequeueping front element..." << endl;
+    q.dequeue();
+    
+    // Should show: 30
     q.display();
 
     return 0;
