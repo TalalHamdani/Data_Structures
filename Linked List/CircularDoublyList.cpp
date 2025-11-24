@@ -175,26 +175,26 @@ int main() {
     List cdl;
     cdl.push_back(10);
     cdl.push_back(20);
-    cdl.push_front(5); // List: 5 10 20
+    cdl.push_front(5);
     cdl.display();
 
-    cout << "Popping from back..." << endl;
-    cdl.pop_back(); // List: 5 10
+    cout << "Popping from back." << endl;
+    cdl.pop_back();
     cdl.display();
 
-    cout << "Popping from front..." << endl;
-    cdl.pop_front(); // List: 10
+    cout << "Popping from front." << endl;
+    cdl.pop_front();
     cdl.display();
 
-    // Test erase
     cdl.push_front(5);
     cdl.push_back(10);
     cdl.push_back(15);
     cdl.push_back(10);
     cout << "\nNew list for erase test: ";
-    cdl.display(); // List: 5 10 10 15 10
+    cdl.display();
 
     cout << "Erasing all 10s..." << endl;
     cdl.erase(10);
     cdl.display(); // List: 5 15
+
 }
